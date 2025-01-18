@@ -4,7 +4,7 @@
 A machine learning project to classify fake and real news articles using LSTM and Random Forest classifiers. This project also features an interactive web interface built with **Streamlit**.
 
 ## Watch the Video 📺
-[![YouTube Video](https://img.shields.io/badge/YouTube-Watch%20Video-red?logo=youtube&logoColor=white&style=for-the-badge)](https://www.youtube.com/watch?v=f-Kk9XOfyDk&t=1457s)
+[![YouTube Video](https://img.shields.io/badge/YouTube-Watch%20Video-red?logo=youtube&logoColor=white&style=for-the-badge)](https://youtu.be/klZtUiRsb6w)
 
 ---
 
