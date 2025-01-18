@@ -7,37 +7,44 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from nltk.stem.porter import PorterStemmer
 nltk.download('stopwords')
 
-model = pickle.load(open('model.pkl', 'rb'))
-tokenizer = pickle.load(open('tokenizer.pkl', 'rb'))    
+# Load saved model and tokenizer
+model = pickle.load(open("model.pkl", "rb"))
+tokenizer = pickle.load(open("tokenizer.pkl", "rb"))
 
+# Initialize preprocessing components
 ps = PorterStemmer()
 stop_words = set(stopwords.words('english'))
 
 def preprocessing(content):
-    content = re.sub('[^a-zA-Z]' , ' ',content)
+    content = re.sub('[^a-zA-Z]', ' ', content)
     content = content.lower()
     content = content.split()
-    content = [ps.stem(word) for word in content if word not in stop_words]
+    content = [ps.stem(word) for word in content if not word in stop_words]
     content = " ".join(content)
     return content
 
-st.title('Fake News Detection')
-st.write("This app detects if the input text is fake news or not")
+# Streamlit app setup
+st.title("Fake News Detection")
+st.write("This app detects if the input text is fake news or not.")
 
-user_input = st.text_area("Enter the news article text below")
+# Input text from user
+user_input = st.text_area("Enter the news article text below:")
 
-if st.button('Predict'):
-    if user_input.strip() == '':
-        st.write('Please enter some text for prediction')
+if st.button("Predict"):
+    if user_input.strip() == "":
+        st.warning("Please enter some text for prediction.")
     else:
-        preprocessed_text = preprocessing(user_input)
-        input_data = tokenizer.texts_to_sequences([preprocessed_text])
-        maxlen = 500
+        # Preprocess the user input
+        processed_text = preprocessing(user_input)
         
-        padded_input = pad_sequences(input_data, padding='post', maxlen=maxlen)
+        # Convert the text into a format the model can understand (using tokenizer)
+        input_data = tokenizer.texts_to_sequences([processed_text])
+        maxlen=500
+        padded_input = pad_sequences(input_data,padding = 'post', maxlen=maxlen)
+
+    
         
         prediction = model.predict(padded_input)
-        
         confidence = float(prediction[0])  # Extract confidence as a percentage
         classification = "Real News" if confidence > 0.5 else "Fake News"
 
